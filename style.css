@@ -1,0 +1,254 @@
+/* Importando uma fonte moderna do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- Variáveis de Cor e Configurações Globais (Melhoria) --- */
+:root {
+    --bg-color: #0d1a26;
+    --primary-color: #00a699;
+    --glass-bg: rgba(25, 50, 70, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #e6e6e6;
+    --text-secondary: #88a0b7;
+    --card-hover-glow: rgba(0, 166, 153, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    background-image: url('https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt8979834042ba784b/6349d4d0342211108b493a86/102022_Valo_League_Homepage_Banner_v2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* --- Layout Principal --- */
+.app-container {
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    height: 90vh;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* --- Barra Lateral --- */
+.sidebar {
+    width: 280px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--glass-border);
+}
+
+.sidebar-header .logo {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--bg-color);
+    margin-bottom: 10px;
+}
+
+.sidebar-header h1 {
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.sidebar-header p {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.sidebar-search, .header-search {
+    position: relative;
+    margin: 25px 0;
+}
+
+.sidebar-search i, .header-search i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+input[type="text"], input[type="range"] {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
+}
+input::placeholder { color: var(--text-secondary); }
+
+.sidebar-nav {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+}
+.nav-item {
+    color: var(--text-secondary);
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+.nav-item.active, .nav-item:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.sidebar-filters { flex-grow: 1; }
+.filter-group { margin-bottom: 20px; }
+.filter-group label { display: block; margin-bottom: 10px; color: var(--text-secondary); }
+.checkbox-group { display: flex; align-items: center; margin-bottom: 8px; }
+.checkbox-group input { width: auto; margin-right: 10px; }
+
+.sidebar-footer { margin-top: auto; }
+.profile-pic { border-radius: 50%; }
+
+/* --- Conteúdo Principal --- */
+.main-content {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto; /* Permite rolagem apenas no conteúdo */
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.main-header h2 { font-size: 28px; }
+.main-header p { color: var(--text-secondary); }
+
+/* --- Grade de Campeões (Responsiva - Melhoria) --- */
+.champion-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.champion-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--glass-border);
+    min-height: 300px;
+}
+
+.champion-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 0 25px var(--card-hover-glow);
+}
+
+.champion-card .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.4s ease;
+}
+.champion-card:hover .bg-image {
+    transform: scale(1.1);
+}
+
+.champion-card .card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+}
+
+.champion-card .free-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.champion-card .champion-info {
+    transform: translateY(40px);
+    transition: transform 0.4s ease;
+}
+
+.champion-card:hover .champion-info {
+    transform: translateY(0);
+}
+
+.champion-card h3 {
+    font-size: 20px;
+    margin: 0;
+}
+.champion-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+.champion-card .play-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.champion-card:hover .play-button {
+    opacity: 1;
+}
+
+.role-tag {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.5);
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+/* Scrollbar customizada */
+.main-content::-webkit-scrollbar { width: 8px; }
+.main-content::-webkit-scrollbar-track { background: transparent; }
+.main-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }

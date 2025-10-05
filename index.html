@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Champions Hub - Glass Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        /* Importando uma fonte moderna do Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        /* --- Variáveis de Cor e Configurações Globais --- */
+        :root {
+            --bg-color: #0d1a26;
+            --primary-color: #00a699;
+            --glass-bg: rgba(15, 30, 45, 0.5); /* Mais transparente para o efeito vidro */
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-primary: #e6e6e6;
+            --text-secondary: #88a0b7;
+            --card-hover-glow: rgba(0, 166, 153, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            /* IMAGEM DE FUNDO ESTÁTICA - MELHORIA */
+            background-image: url('https://images.contentstack.io/v3/assets/blt731acb42bb3d1659/blt8979834042ba784b/6349d4d0342211108b493a86/102022_Valo_League_Homepage_Banner_v2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Mantém o fundo fixo durante a rolagem */
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* --- Layout Principal --- */
+        .app-container {
+            display: flex;
+            width: 100%;
+            max-width: 1400px;
+            height: 90vh;
+            /* EFEITO VIDRO APRIMORADO */
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px); /* Desfoque mais intenso */
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Barra Lateral --- */
+        .sidebar {
+            width: 280px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--glass-border);
+        }
+
+        .sidebar-header .logo {
+            width: 40px; height: 40px; background: var(--primary-color);
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; color: var(--bg-color);
+            margin-bottom: 10px;
+        }
+        .sidebar-header h1 { font-size: 12px; color: var(--text-secondary); letter-spacing: 1px; }
+        .sidebar-header p { font-size: 20px; font-weight: 600; }
+
+        .sidebar-search, .header-search { position: relative; margin: 25px 0; }
+        .sidebar-search i, .header-search i {
+            position: absolute; top: 50%; left: 15px;
+            transform: translateY(-50%); color: var(--text-secondary);
+        }
+        input[type="text"] {
+            width: 100%; padding: 12px 12px 12px 40px;
+            background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            border-radius: 8px; color: var(--text-primary); font-family: 'Poppins', sans-serif;
+        }
+        input::placeholder { color: var(--text-secondary); }
+
+        .sidebar-nav {
+            display: flex; justify-content: space-around; margin: 20px 0;
+            padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px;
+        }
+        .nav-item {
+            color: var(--text-secondary); font-size: 18px; padding: 10px 15px;
+            border-radius: 8px; transition: all 0.3s ease;
+        }
+        .nav-item.active, .nav-item:hover { background: var(--primary-color); color: white; }
+
+        .sidebar-filters { flex-grow: 1; }
+        .filter-group { margin-bottom: 20px; }
+        .filter-group label { display: block; margin-bottom: 10px; color: var(--text-secondary); }
+        .checkbox-group { display: flex; align-items: center; margin-bottom: 8px; }
+        .checkbox-group input { width: auto; margin-right: 10px; }
+
+        /* ADIÇÃO DO NOME DE USUÁRIO */
+        .sidebar-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px; /* Espaçamento entre foto e nome */
+        }
+        .profile-pic { border-radius: 50%; }
+        .username { font-weight: 500; color: var(--text-primary); }
+
+        /* --- Conteúdo Principal --- */
+        .main-content {
+            flex: 1; padding: 25px;
+            overflow-y: auto; /* Permite rolagem apenas no conteúdo */
+        }
+        .main-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+        .main-header h2 { font-size: 28px; }
+        .main-header p { color: var(--text-secondary); }
+
+        /* --- Grade de Campeões --- */
+        .champion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .champion-card {
+            position: relative; border-radius: 15px; overflow: hidden;
+            cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Efeito vidro no card */
+            border: 1px solid var(--glass-border);
+            min-height: 300px;
+            background: rgba(0,0,0,0.2);
+        }
+        .champion-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 0 25px var(--card-hover-glow);
+        }
+        .champion-card .bg-image {
+            width: 100%; height: 100%; object-fit: cover; object-position: top;
+            transition: transform 0.4s ease;
+        }
+        .champion-card:hover .bg-image { transform: scale(1.1); }
+        .champion-card .card-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+        }
+        .champion-card .free-tag {
+            position: absolute; top: 10px; left: 10px;
+            background-color: var(--primary-color); color: white;
+            padding: 5px 10px; border-radius: 8px; font-size: 12px;
+            font-weight: bold;
+        }
+        .champion-card .champion-info {
+            transform: translateY(40px); transition: transform 0.4s ease;
+        }
+        .champion-card:hover .champion-info { transform: translateY(0); }
+        .champion-card h3 { font-size: 20px; margin: 0; }
+        .champion-card p { font-size: 14px; color: var(--text-secondary); margin-bottom: 15px; }
+        .champion-card .play-button {
+            display: inline-block; padding: 10px 20px; background: var(--primary-color);
+            color: white; text-decoration: none; border-radius: 8px;
+            font-weight: 500; opacity: 0; transition: opacity 0.4s ease;
+        }
+        .champion-card:hover .play-button { opacity: 1; }
+        .role-tag {
+            position: absolute; bottom: 20px; right: 20px;
+            background: rgba(0,0,0,0.5); padding: 5px 10px;
+            border-radius: 8px; font-size: 12px;
+        }
+
+        /* Scrollbar customizada */
+        .main-content::-webkit-scrollbar { width: 8px; }
+        .main-content::-webkit-scrollbar-track { background: transparent; }
+        .main-content::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">RL</div>
+                <h1>RIOT GAMES</h1>
+                <p>Champions</p>
+            </div>
+
+            <div class="sidebar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search champions...">
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-grip"></i></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-user"></i></a>
+            </nav>
+
+            <div class="sidebar-filters">
+                <div class="filter-group">
+                    <label>Position</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pos-all" class="position-filter" value="all" checked>
+                        <label for="pos-all">All Positions</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pos-top" class="position-filter" value="Top">
+                        <label for="pos-top">Top Lane</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pos-jungle" class="position-filter" value="Jungle">
+                        <label for="pos-jungle">Jungle</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pos-mid" class="position-filter" value="Mid">
+                        <label for="pos-mid">Mid</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pos-bot" class="position-filter" value="ADC">
+                        <label for="pos-bot">Bot Lane</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="pos-support" class="position-filter" value="Support">
+                        <label for="pos-support">Support</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <img src="https://i.pravatar.cc/40" alt="User Profile" class="profile-pic">
+                <span class="username">@usuario</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <div>
+                    <h2>Champions</h2>
+                    <p>Discover your next main</p>
+                </div>
+                <div class="header-search">
+                     <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="main-search" placeholder="Search champions...">
+                </div>
+            </header>
+
+            <section id="champion-grid" class="champion-grid">
+                </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Banco de Dados dos Campeões (Fácil de atualizar) ---
+            const champions = [
+                { name: 'Ahri', title: 'the Nine-Tailed Fox', role: 'Mid', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ahri_0.jpg', isFree: true },
+                { name: 'Jinx', title: 'the Loose Cannon', role: 'ADC', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Jinx_0.jpg', isFree: false },
+                { name: 'Thresh', title: 'the Chain Warden', role: 'Support', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Thresh_0.jpg', isFree: false },
+                { name: 'Lee Sin', title: 'the Blind Monk', role: 'Jungle', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/LeeSin_0.jpg', isFree: false },
+                { name: 'Lux', title: 'the Lady of Luminosity', role: 'Mid', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Lux_0.jpg', isFree: true },
+                { name: 'Darius', title: 'the Hand of Noxus', role: 'Top', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Darius_0.jpg', isFree: false },
+                { name: 'Ezreal', title: 'the Prodigal Explorer', role: 'ADC', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ezreal_0.jpg', isFree: false },
+                { name: 'Yasuo', title: 'the Unforgiven', role: 'Mid', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Yasuo_0.jpg', isFree: true },
+                { name: 'Ashe', title: 'the Frost Archer', role: 'ADC', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Ashe_0.jpg', isFree: true },
+                { name: 'Garen', title: 'the Might of Demacia', role: 'Top', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Garen_0.jpg', isFree: true },
+                { name: 'Viego', title: 'The Ruined King', role: 'Jungle', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Viego_0.jpg', isFree: false },
+                { name: 'Leona', title: 'the Radiant Dawn', role: 'Support', image: 'https://ddragon.leagueoflegends.com/cdn/img/champion/splash/Leona_0.jpg', isFree: true }
+            ];
+
+            const championGrid = document.getElementById('champion-grid');
+            const searchInput = document.getElementById('main-search');
+            const positionFilters = document.querySelectorAll('.position-filter');
+
+            // --- Função para Renderizar os Campeões na Tela ---
+            function displayChampions(filteredChampions) {
+                championGrid.innerHTML = ''; // Limpa a grade
+                filteredChampions.forEach(champion => {
+                    const card = document.createElement('div');
+                    card.className = 'champion-card';
+                    card.innerHTML = `
+                        <img src="${champion.image}" alt="${champion.name}" class="bg-image">
+                        ${champion.isFree ? '<div class="free-tag">FREE</div>' : ''}
+                        <div class="card-overlay">
+                            <div class="champion-info">
+                                <h3>${champion.name}</h3>
+                                <p>${champion.title}</p>
+                                <a href="#" class="play-button">Play Now</a>
+                            </div>
+                        </div>
+                        <div class="role-tag">${champion.role}</div>
+                    `;
+                    championGrid.appendChild(card);
+                });
+            }
+
+            // --- Função para Filtrar e Atualizar a Tela ---
+            function filterAndDisplay() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activePositions = Array.from(positionFilters)
+                                             .filter(cb => cb.checked && cb.value !== 'all')
+                                             .map(cb => cb.value);
+                let filtered = champions;
+                if (searchTerm) {
+                    filtered = filtered.filter(champ => 
+                        champ.name.toLowerCase().includes(searchTerm) ||
+                        champ.title.toLowerCase().includes(searchTerm)
+                    );
+                }
+                if (activePositions.length > 0) {
+                    filtered = filtered.filter(champ => activePositions.includes(champ.role));
+                }
+                displayChampions(filtered);
+            }
+
+            // --- Lógica para os checkboxes de posição ---
+            positionFilters.forEach(checkbox => {
+                checkbox.addEventListener('change', (e) => {
+                    const allPositionsCheckbox = document.getElementById('pos-all');
+                    if (e.target.id === 'pos-all') {
+                        if (e.target.checked) {
+                            positionFilters.forEach(cb => { if(cb.id !== 'pos-all') cb.checked = false; });
+                        }
+                    } else {
+                        if (e.target.checked) { allPositionsCheckbox.checked = false; }
+                    }
+                    const anySpecificChecked = Array.from(positionFilters).some(cb => cb.id !== 'pos-all' && cb.checked);
+                    if (!anySpecificChecked) { allPositionsCheckbox.checked = true; }
+                    filterAndDisplay();
+                });
+            });
+
+            searchInput.addEventListener('input', filterAndDisplay);
+            displayChampions(champions); 
+        });
+    </script>
+</body>
+</html>
